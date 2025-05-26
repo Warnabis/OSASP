@@ -1,10 +1,6 @@
 #include "include.h"
 #include <fnmatch.h>  
 
-static int cmpstringp(const void* p1, const void* p2) {
-    return strcmp((const char*)p1, (const char*)p2);
-}
-
 void execute_find(const char* path, const char* name_filter) {
     search_results.result_count = 0;
 
