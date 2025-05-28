@@ -5,6 +5,7 @@ SearchSettings settings = {
     .name_filter = "*",
     .filter_only_files = 0,
     .filter_only_dirs = 0,
+    .filter_only_links = 0,
     .sort_results = 0
 };
 
