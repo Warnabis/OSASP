@@ -1,10 +1,10 @@
 #include "include.h"
 #include <fnmatch.h>  
 
-void execute_find(const char* path, const char* name_filter) {
+void execute_find(const char *path, const char *name_filter) {
     search_results.result_count = 0;
 
-    const char* effective_filter = (name_filter == NULL || name_filter[0] == '\0') ? "*" : name_filter;
+    const char *effective_filter = (name_filter == NULL || name_filter[0] == '\0') ? "*" : name_filter;
 
     char cmd[MAX_CMD];
     snprintf(cmd, MAX_CMD, "find %s -name \"%s\"", path, effective_filter);
@@ -13,6 +13,8 @@ void execute_find(const char* path, const char* name_filter) {
         strcat(cmd, " -type f");
     else if (settings.filter_only_dirs)
         strcat(cmd, " -type d");
+    else if (settings.filter_only_links)
+        strcat(cmd, " -type l");
 
     if (settings.sort_results)
         strcat(cmd, " | sort");
@@ -23,8 +25,7 @@ void execute_find(const char* path, const char* name_filter) {
         strncpy(command_history.history[command_history.history_count], cmd, MAX_CMD - 1);
         command_history.history[command_history.history_count][MAX_CMD - 1] = 0;
         command_history.history_count++;
-    }
-    else {
+    } else {
         for (int i = 1; i < MAX_HISTORY; i++) {
             strcpy(command_history.history[i - 1], command_history.history[i]);
         }
@@ -34,14 +35,14 @@ void execute_find(const char* path, const char* name_filter) {
 
     int ret = system(cmd);
     if (ret != 0) {
-
+        
         return;
     }
 
-    FILE* file = fopen("temp_results.txt", "r");
+    FILE *file = fopen("temp_results.txt", "r");
     if (file) {
         while (fgets(search_results.results[search_results.result_count], MAX_PATH, file) && search_results.result_count < MAX_RESULTS) {
-
+           
             search_results.results[search_results.result_count][strcspn(search_results.results[search_results.result_count], "\n")] = 0;
             search_results.result_count++;
         }
