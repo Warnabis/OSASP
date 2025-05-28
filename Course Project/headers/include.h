@@ -18,6 +18,7 @@ typedef struct {
     char name_filter[MAX_PATH];
     int filter_only_files;
     int filter_only_dirs;
+    int filter_only_links;
     int sort_results;
 } SearchSettings;
 
@@ -37,7 +38,9 @@ extern CommandHistory command_history;
 
 void draw_menu(int highlight);
 void display_results();
+void ui_main_menu_loop();
 void display_history();
+
 
 void execute_find(const char *path, const char *name_filter);
 
